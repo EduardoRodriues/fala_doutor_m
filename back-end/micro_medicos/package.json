@@ -11,7 +11,9 @@
   "description": "",
   "dependencies": {
     "@prisma/client": "^6.10.1",
+    "axios": "^1.10.0",
     "express": "^5.1.0",
+    "node-fetch": "^3.3.2",
     "zod": "^3.25.67"
   },
   "devDependencies": {

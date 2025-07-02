@@ -14,10 +14,22 @@ datasource db {
 }
 
 model Medico {
-  id        BigInt   @id @default(autoincrement())
+  id        BigInt        @id @default(autoincrement())
   nome      String
-  cpf       String   @unique
-  crm       String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  cpf       String        @unique
+  crm       String        @unique
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  planos    MedicoPlano[] 
 }
+
+model MedicoPlano {
+  medicoId BigInt
+  planoId  BigInt
+
+  medico   Medico @relation(fields: [medicoId], references: [id])
+
+  @@id([medicoId, planoId])
+}
+
+
