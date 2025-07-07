@@ -1,16 +1,41 @@
-import { prisma } from "../libs/prisma";
+import { prisma } from "./../libs/prisma";
 import { toForm } from "../mappers/planoMapper";
 import { PlanoDTO } from "../../core/validations/planoDTOvalidation";
 import { Decimal } from "@prisma/client/runtime/library";
+import { PlanoPaginationResponse } from "../types/planoPaginationResponse";
 
-export async function buscarPlanos(): Promise<PlanoDTO[]> {
-  const planos = await prisma.plano.findMany();
-  return planos.map(toForm);
+export async function buscarPlanosPaginado(
+  page: number,
+  limit: number
+): Promise<PlanoPaginationResponse<PlanoDTO>> {
+  const skip = (page - 1) * limit;
+
+  const [total, planos] = await Promise.all([
+    prisma.plano.count(),
+    prisma.plano.findMany({
+      skip,
+      take: limit,
+      orderBy: { createdAt: "asc" },
+    }),
+  ]);
+
+  const data = await Promise.all(planos.map(toForm));
+
+  return {
+    data,
+    paginaAtual: page,
+    totalPaginas: Math.ceil(total / limit),
+    totalItens: total,
+  };
 }
 
 export async function cadastrarPlano(data: PlanoDTO) {
   const novoPlano = await prisma.plano.create({
-    data,
+    data: {
+      nome: data.nome,
+      descricao: data.descricao,
+      preco: new Decimal(data.preco),
+    },
   });
 
   return toForm(novoPlano);

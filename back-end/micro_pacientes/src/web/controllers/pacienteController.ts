@@ -2,7 +2,10 @@ import * as pacienteService from "../services/pacienteService";
 import { Request, Response } from "express";
 
 export async function listarTodos(req: Request, res: Response) {
-  const lista = await pacienteService.buscarPacientes();
+  const page = parseInt(req.query.page as string) || 1;
+  const limit = parseInt(req.query.limit as string) || 10;
+
+  const lista = await pacienteService.buscarPacientesPaginado(page, limit);
   res.status(200).json(lista);
 }
 

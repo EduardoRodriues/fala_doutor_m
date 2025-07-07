@@ -1,10 +1,31 @@
 import { prisma } from "../libs/prisma";
 import { toForm } from "../mappers/pacienteMapper";
 import { PacienteDTO } from "../types/pacienteDTO";
+import { PacientePaginationResponse } from "../types/pacientePaginationResponse";
 
-export async function buscarPacientes(): Promise<PacienteDTO[]> {
-  const lista = await prisma.paciente.findMany();
-  return lista.map(toForm);
+export async function buscarPacientesPaginado(
+  page: number,
+  limit: number
+): Promise<PacientePaginationResponse<PacienteDTO>> {
+  const skip = (page - 1) * limit;
+
+  const [total, pacientes] = await Promise.all([
+    prisma.paciente.count(),
+    prisma.paciente.findMany({
+      skip,
+      take: limit,
+      orderBy: { createdAt: "asc" },
+    }),
+  ]);
+
+  const data = await Promise.all(pacientes.map(toForm));
+
+  return {
+    data,
+    paginaAtual: page,
+    totalPaginas: Math.ceil(total / limit),
+    totalItens: total,
+  };
 }
 
 export async function criarPaciente(data: PacienteDTO) {
@@ -12,7 +33,7 @@ export async function criarPaciente(data: PacienteDTO) {
     data: {
       nome: data.nome,
       cpf: data.cpf,
-      dataNasc: data.dataNasc,
+      dataNasc: new Date(data.dataNasc),
       planoId: BigInt(data.planoId),
     },
   });
@@ -41,7 +62,7 @@ export async function editarPaciente(id: number, data: PacienteDTO) {
     data: {
       nome: data.nome,
       cpf: data.cpf,
-      dataNasc: data.dataNasc,
+      dataNasc: new Date(data.dataNasc),
       planoId: BigInt(data.planoId),
     },
   });

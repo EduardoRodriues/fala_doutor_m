@@ -18,6 +18,7 @@ model Medico {
   nome      String
   cpf       String        @unique
   crm       String        @unique
+  dataNasc  DateTime
   createdAt DateTime      @default(now())
   updatedAt DateTime      @updatedAt
   planos    MedicoPlano[] 
@@ -31,5 +32,7 @@ model MedicoPlano {
 
   @@id([medicoId, planoId])
 }
+
+
 
 

@@ -1,0 +1,141 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap");
+
+.sidebar {
+  width: 220px;
+  height: 100vh;
+  background-color: #ffffff;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  padding: 20px 15px;
+  font-family: "Poppins", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.sidebar-header {
+  margin-bottom: 40px;
+}
+
+.avatar-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #007bff;
+  object-fit: cover;
+}
+
+.sidebar-header h2 {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #000;
+  margin: 0;
+}
+
+.menu {
+  margin-top: 10px;
+}
+
+.menu ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.menu ul > a {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  border-radius: 4px;
+  margin-bottom: 8px;
+  transition: background-color 0.2s;
+}
+
+.menu ul > a:hover {
+  background-color: #e6e6e6;
+}
+
+.menu ul > a > li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 5px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  color: inherit;
+  border-radius: 4px;
+  user-select: none;
+}
+
+.icon {
+  font-size: 1rem;
+  color: #353535;
+}
+
+.bottom-buttons {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 5px;
+}
+
+.logout-icon,
+.settings-icon {
+  font-size: 1.2rem;
+  color: #353535;
+  cursor: pointer;
+}
+
+.submenu-relatorios {
+  margin-left: 15px;
+  margin-top: 4px;
+}
+
+.submenu-relatorios a {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  border-radius: 4px;
+  margin-bottom: 6px;
+  transition: background-color 0.2s;
+}
+
+.submenu-relatorios a:hover {
+  background-color: #e6e6e6;
+}
+
+.submenu-relatorios li {
+  display: flex;
+  align-items: center;
+  padding: 6px 5px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.relatorios-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 5px;
+  font-size: 0.95rem;
+  border-radius: 4px;
+  user-select: none;
+  transition: background-color 0.2s;
+}
+
+.relatorios-toggle:hover {
+  background-color: #e6e6e6;
+}
+
+.chevron-icon {
+  margin-left: auto;
+  font-size: 0.8rem;
+  color: #353535;
+}
+

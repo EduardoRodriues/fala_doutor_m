@@ -1,0 +1,49 @@
+.confirmacao-conteudo {
+  background: white;
+  padding: 1.6rem;
+  border-radius: 6px;
+  max-width: 370px;
+  width: 80%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  text-align: center;
+}
+
+.confirmacao-conteudo p {
+  font-size: 0.9rem;
+  color: rgba(0, 0, 0, 0.7);
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+.botoes-confirmacao {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.botoes-confirmacao button {
+  padding: 12px 28px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn-sim {
+  background-color: #fa2a2a;
+  color: white;
+}
+
+.btn-sim:hover {
+  background-color: #ee1010;
+}
+
+.btn-nao {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+.btn-nao:hover {
+  background-color: #cfcfcf;
+}

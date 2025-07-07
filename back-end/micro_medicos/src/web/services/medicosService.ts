@@ -1,31 +1,63 @@
+import axios from "axios";
 import { prisma } from "../libs/prisma";
 import { MedicoDTO } from "../types/medicoDTO";
-import { MedicoResponseDTO } from "../types/medicoResponseDTO";
 import { toForm } from "../mappers/medicoMapper";
-import fetch from "node-fetch";
-import axios from "axios";
+import dayjs from "dayjs";
+import { MedicoResponseDTO } from "../types/medicoResponseDTO";
+import { MedicoPaginationResponse } from "../types/medicoPaginationResponse";
 
-export async function listarMedicos(): Promise<MedicoResponseDTO[]> {
-  const medicos = await prisma.medico.findMany({
-    include: { planos: true },
-  });
-  return medicos.map(toForm);
+async function validarPlanoExiste(planoId: bigint): Promise<boolean> {
+  try {
+    const response = await axios.get(
+      `http://localhost:3002/planos/${planoId.toString()}`
+    );
+    return response.status === 200 && response.data !== null;
+  } catch {
+    return false;
+  }
 }
 
-export async function buscarPorId(
-  id: bigint
-): Promise<MedicoResponseDTO | null> {
-  const medico = await prisma.medico.findUnique({
-    where: { id },
-    include: { planos: true },
-  });
-  if (!medico) return null;
-  return toForm(medico);
+export async function buscarMedicosPaginado(
+  page: number,
+  limit: number
+): Promise<MedicoPaginationResponse<MedicoResponseDTO>> {
+  const skip = (page - 1) * limit;
+
+  const [total, medicos] = await Promise.all([
+    prisma.medico.count(),
+    prisma.medico.findMany({
+      skip,
+      take: limit,
+      orderBy: { createdAt: "asc" },
+      include: { planos: true },
+    }),
+  ]);
+
+  const data = await Promise.all(medicos.map(toForm));
+
+  return {
+    data,
+    paginaAtual: page,
+    totalPaginas: Math.ceil(total / limit),
+    totalItens: total,
+  };
 }
 
-export async function criarMedico(data: MedicoDTO, planoIds: bigint[] = []) {
-  if (!(await validarPlanosExistem(planoIds))) {
-    throw new Error("Um ou mais planos não existem");
+export async function cadastrarMedico(
+  data: MedicoDTO & { planoIds: string[] }
+): Promise<MedicoDTO> {
+  const dataNasc = dayjs(data.dataNasc, "DDMMYYYY", true);
+
+  if (!dataNasc.isValid()) {
+    throw new Error("Data de nascimento inválida");
+  }
+
+  for (const planoIdStr of data.planoIds) {
+    const planoId = BigInt(planoIdStr);
+    const existe = await validarPlanoExiste(planoId);
+    if (!existe) {
+      throw new Error(`Plano com id ${planoId} não existe.`);
+    }
   }
 
   const novoMedico = await prisma.medico.create({
@@ -33,57 +65,113 @@ export async function criarMedico(data: MedicoDTO, planoIds: bigint[] = []) {
       nome: data.nome,
       cpf: data.cpf,
       crm: data.crm,
-      planos: {
-        create: planoIds.map((planoId) => ({
-          planoId,
-        })),
-      },
+      dataNasc: dataNasc.toDate(),
     },
+  });
+
+  const relacoes = data.planoIds.map((planoId) => ({
+    medicoId: novoMedico.id,
+    planoId: BigInt(planoId),
+  }));
+
+  await prisma.medicoPlano.createMany({
+    data: relacoes,
+  });
+
+  const medicoComPlanos = await prisma.medico.findUnique({
+    where: { id: novoMedico.id },
     include: { planos: true },
   });
-  return toForm(novoMedico);
+
+  return toForm(medicoComPlanos);
+}
+
+export async function buscarPorId(id: number): Promise<MedicoDTO | null> {
+  const medico = await prisma.medico.findUnique({
+    where: {
+      id: BigInt(id),
+    },
+    include: {
+      planos: true,
+    },
+  });
+
+  if (!medico) {
+    return null;
+  }
+
+  return toForm(medico);
 }
 
 export async function editarMedico(
-  id: bigint,
-  data: MedicoDTO,
-  planoIds: bigint[]
-) {
-  const medicoAtual = await prisma.medico.findUnique({
-    where: { id },
-    include: { planos: true },
-  });
-  if (!medicoAtual) return null;
+  id: number,
+  data: MedicoDTO & { planoIds: string[] }
+): Promise<MedicoDTO | null> {
+  const dataNasc = dayjs(data.dataNasc, "DDMMYYYY", true);
 
-  await prisma.medicoPlano.deleteMany({
-    where: { medicoId: id },
-  });
+  if (!dataNasc.isValid()) {
+    throw new Error("Data de nascimento inválida");
+  }
 
-  const medicoAtualizado = await prisma.medico.update({
-    where: { id },
+  const medicoExistente = await buscarPorId(id);
+
+  if (!medicoExistente) {
+    return null;
+  }
+
+  for (const planoIdStr of data.planoIds) {
+    const planoId = BigInt(planoIdStr);
+    const existe = await validarPlanoExiste(planoId);
+    if (!existe) {
+      throw new Error(`Plano com id ${planoId} não existe.`);
+    }
+  }
+
+  await prisma.medico.update({
+    where: { id: BigInt(id) },
     data: {
       nome: data.nome,
       cpf: data.cpf,
       crm: data.crm,
-      planos: {
-        create: planoIds.map((planoId) => ({
-          planoId,
-        })),
-      },
+      dataNasc: dataNasc.toDate(),
     },
+  });
+
+  await prisma.medicoPlano.deleteMany({
+    where: { medicoId: BigInt(id) },
+  });
+
+  const relacoes = data.planoIds.map((planoId) => ({
+    medicoId: BigInt(id),
+    planoId: BigInt(planoId),
+  }));
+
+  await prisma.medicoPlano.createMany({
+    data: relacoes,
+  });
+
+  const medicoAtualizado = await prisma.medico.findUnique({
+    where: { id: BigInt(id) },
     include: { planos: true },
   });
 
   return toForm(medicoAtualizado);
 }
 
-export async function deletarMedico(id: bigint) {
-  await prisma.medicoPlano.deleteMany({ where: { medicoId: id } });
-  await prisma.medico.delete({ where: { id } });
-}
+export async function deletarMedico(id: number): Promise<MedicoDTO | null> {
+  const medico = await buscarPorId(id);
 
-async function validarPlanosExistem(planoIds: bigint[]): Promise<boolean> {
-  const { data: planos } = await axios.get("http://localhost:3002/planos");
-  const idsExistentes = planos.map((p: any) => BigInt(p.id));
-  return planoIds.every((id) => idsExistentes.includes(id));
+  if (!medico) {
+    return null;
+  }
+
+  await prisma.medicoPlano.deleteMany({
+    where: { medicoId: BigInt(id) },
+  });
+
+  await prisma.medico.delete({
+    where: { id: BigInt(id) },
+  });
+
+  return medico;
 }

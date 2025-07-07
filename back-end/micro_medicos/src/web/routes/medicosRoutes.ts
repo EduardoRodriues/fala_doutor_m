@@ -5,7 +5,7 @@ const MedicoRoutes = Router();
 
 MedicoRoutes.get("/", medicoController.listarMedicos);
 MedicoRoutes.post("/", medicoController.cadastrarMedico);
-MedicoRoutes.get("/:id", medicoController.buscarPorId)
+MedicoRoutes.get("/:id", medicoController.buscarMedicoPorId)
 MedicoRoutes.put("/:id", medicoController.atualizarMedico)
 MedicoRoutes.delete("/:id", medicoController.deletarMedico);
 
