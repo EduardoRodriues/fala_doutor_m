@@ -11,7 +11,7 @@ body {
   color: #222;
 }
 
-.header {
+.header-relatorio-pacientes {
   max-width: 1200px;
   width: 100%;
   margin: 2rem auto 1rem auto;
@@ -21,20 +21,20 @@ body {
   padding: 0 2rem;
 }
 
-.header h1 {
+.header-relatorio-pacientes h1 {
   font-size: 1.5rem;
   font-weight: 500;
   color: #1a1a1a;
 }
 
-.back {
+.back-relatorio-pacientes {
   display: flex;
   justify-content: center;
   align-items: flex-start;
   padding: 0 2rem 2rem 2rem;
 }
 
-.back > div {
+.back-relatorio-pacientes > div {
   width: 100%;
   overflow-x: auto;
   background: white;
@@ -46,14 +46,14 @@ body {
   gap: 0.8rem;
 }
 
-.back > div > div > p {
+.back-relatorio-pacientes > div > div > p {
   font-size: 1.2rem;
   font-weight: 500;
   color: #1a1a1a;
   padding: 0 20px;
 }
 
-.tabela {
+.tabela-relatorio-pacientes {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0 15px;
@@ -63,11 +63,11 @@ body {
   font-family: inherit;
 }
 
-.tabela thead tr {
+.tabela-relatorio-pacientes thead tr {
   background-color: transparent;
 }
 
-.tabela thead th {
+.tabela-relatorio-pacientes thead th {
   padding: 15px 40px;
   font-weight: 400;
   font-size: 0.75rem;
@@ -76,11 +76,12 @@ body {
   text-align: left;
 }
 
-.tabela tbody tr {
+.tabela-relatorio-pacientes tbody tr {
   border-bottom: 1px solid #eee;
 }
 
-.tabela tbody td {
+.tabela-relatorio-pacientes tbody td {
+  border-bottom: 1px solid #cccccc67;
   padding: 15px 40px;
   font-size: 0.85rem;
   color: #222222;
@@ -88,12 +89,12 @@ body {
   white-space: nowrap;
 }
 
-.tabela tbody tr:hover {
+.tabela-relatorio-pacientes tbody tr:hover {
   background: none;
   cursor: default;
 }
 
-.filtro-pacientes {
+.filtro-pacientes-relatorio-pacientes {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -101,7 +102,7 @@ body {
   margin-bottom: 1rem;
 }
 
-.filtro-pacientes label select {
+.filtro-pacientes-relatorio-pacientes label select {
   margin-left: 0.5rem;
   padding: 4px 8px;
   border-radius: 4px;
@@ -110,24 +111,24 @@ body {
 }
 
 @media (max-width: 600px) {
-  .tabela thead {
+  .tabela-relatorio-pacientes thead {
     display: none;
   }
 
-  .tabela,
-  .tabela tbody,
-  .tabela tr,
-  .tabela td {
+  .tabela-relatorio-pacientes,
+  .tabela-relatorio-pacientes tbody,
+  .tabela-relatorio-pacientes tr,
+  .tabela-relatorio-pacientes td {
     display: block;
     width: 100%;
   }
 
-  .tabela tr {
+  .tabela-relatorio-pacientes tr {
     margin-bottom: 1rem;
     border-bottom: 1px solid #ccc;
   }
 
-  .tabela td {
+  .tabela-relatorio-pacientes td {
     position: relative;
     padding: 12px 10px 12px 50%;
     min-height: 48px;
@@ -135,7 +136,7 @@ body {
     overflow-wrap: break-word;
   }
 
-  .tabela td::before {
+  .tabela-relatorio-pacientes td::before {
     content: attr(data-label);
     position: absolute;
     top: 50%;

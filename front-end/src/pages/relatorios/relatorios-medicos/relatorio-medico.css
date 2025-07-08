@@ -11,7 +11,7 @@ body {
   color: #222;
 }
 
-.header {
+.header-relatorio-medicos {
   max-width: 1200px;
   width: 100%;
   margin: 2rem auto 1rem auto;
@@ -21,20 +21,20 @@ body {
   padding: 0 2rem;
 }
 
-.header h1 {
+.header-relatorio-medicos h1 {
   font-size: 1.5rem;
   font-weight: 500;
   color: #1a1a1a;
 }
 
-.back {
+.back-relatorio-medicos {
   display: flex;
   justify-content: center;
   align-items: flex-start;
   padding: 0 2rem 2rem 2rem;
 }
 
-.back > div {
+.back-relatorio-medicos > div {
   width: 100%;
   background: white;
   padding: 2rem;
@@ -45,14 +45,14 @@ body {
   gap: 0.8rem;
 }
 
-.back > div > div > p {
+.back-relatorio-medicos > div > div > p {
   font-size: 1.2rem;
   font-weight: 500;
   color: #1a1a1a;
   padding: 0 20px;
 }
 
-.tabela {
+.tabela-relatorio-medicos {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0 15px;
@@ -62,11 +62,11 @@ body {
   font-family: inherit;
 }
 
-.tabela thead tr {
+.tabela-relatorio-medicos thead tr {
   background-color: transparent;
 }
 
-.tabela thead th {
+.tabela-relatorio-medicos thead th {
   padding: 15px 40px;
   font-weight: 400;
   font-size: 0.75rem;
@@ -75,43 +75,43 @@ body {
   text-align: left;
 }
 
-.tabela tbody tr {
+.tabela-relatorio-medicos tbody tr {
   border-bottom: 1px solid #eee;
 }
 
-.tabela tbody td {
+.tabela-relatorio-medicos tbody td {
+  border-bottom: 1px solid #cccccc67;
   padding: 15px 40px;
   font-size: 0.85rem;
   color: #222222;
   font-weight: 300;
   white-space: nowrap;
-  
 }
 
-.tabela tbody tr:hover {
+.tabela-relatorio-medicos tbody tr:hover {
   background: none;
   cursor: default;
 }
 
 @media (max-width: 600px) {
-  .tabela thead {
+  .tabela-relatorio-medicos thead {
     display: none;
   }
 
-  .tabela,
-  .tabela tbody,
-  .tabela tr,
-  .tabela td {
+  .tabela-relatorio-medicos,
+  .tabela-relatorio-medicos tbody,
+  .tabela-relatorio-medicos tr,
+  .tabela-relatorio-medicos td {
     display: block;
     width: 100%;
   }
 
-  .tabela tr {
+  .tabela-relatorio-medicos tr {
     margin-bottom: 1rem;
     border-bottom: 1px solid #ccc;
   }
 
-  .tabela td {
+  .tabela-relatorio-medicos td {
     position: relative;
     padding: 12px 10px 12px 50%;
     min-height: 48px;
@@ -119,7 +119,7 @@ body {
     overflow-wrap: break-word;
   }
 
-  .tabela td::before {
+  .tabela-relatorio-medicos td::before {
     content: attr(data-label);
     position: absolute;
     top: 50%;
@@ -188,4 +188,41 @@ body {
 .paginacao select:focus {
   border-color: #007bff;
   outline: none;
+}
+
+.view-selector-relatorio-medicos {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.view-selector-relatorio-medicos p {
+  font-size: 1.2rem;
+  font-weight: 500;
+  color: #1a1a1a;
+}
+
+.view-selector-relatorio-medicos select {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  color: #333;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  min-width: 160px;
+  outline: none;
+}
+
+.view-selector-relatorio-medicos select:hover,
+.view-selector-relatorio-medicos select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
+}
+
+.grafico-container-relatorio-medicos {
+  width: 100%;
+  height: 300px;
 }

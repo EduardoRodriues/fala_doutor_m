@@ -11,7 +11,7 @@ body {
   color: #222;
 }
 
-.header {
+.header-relatorio-planos {
   max-width: 1200px;
   width: 100%;
   margin: 2rem auto 1rem auto;
@@ -21,20 +21,20 @@ body {
   padding: 0 2rem;
 }
 
-.header h1 {
+.header-relatorio-planos h1 {
   font-size: 1.5rem;
   font-weight: 500;
   color: #1a1a1a;
 }
 
-.back {
+.back-relatorio-planos {
   display: flex;
   justify-content: center;
   align-items: flex-start;
   padding: 0 2rem 2rem 2rem;
 }
 
-.back > div {
+.back-relatorio-planos > div {
   width: 100%;
   overflow-x: auto;
   background: white;
@@ -46,14 +46,51 @@ body {
   gap: 0.8rem;
 }
 
-.back > div > div > p {
+.back-relatorio-planos > div > div > p {
   font-size: 1.2rem;
   font-weight: 500;
   color: #1a1a1a;
   padding: 0 20px;
 }
 
-.tabela {
+.view-selector-relatorio-planos {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.view-selector-relatorio-planos label,
+.view-selector-relatorio-planos select {
+  font-size: 0.85rem;
+  margin-left: 0.5rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.filtro-preco-relatorio-planos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px;
+  margin-top: 1rem;
+}
+
+.filtro-preco-relatorio-planos label {
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+}
+
+.filtro-preco-relatorio-planos label select {
+  margin-left: 0.5rem;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.tabela-relatorio-planos {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0 15px;
@@ -63,11 +100,11 @@ body {
   font-family: inherit;
 }
 
-.tabela thead tr {
+.tabela-relatorio-planos thead tr {
   background-color: transparent;
 }
 
-.tabela thead th {
+.tabela-relatorio-planos thead th {
   padding: 15px 40px;
   font-weight: 400;
   font-size: 0.75rem;
@@ -76,11 +113,11 @@ body {
   text-align: left;
 }
 
-.tabela tbody tr {
+.tabela-relatorio-planos tbody tr {
   border-bottom: 1px solid #eee;
 }
 
-.tabela tbody td {
+.tabela-relatorio-planos tbody td {
   padding: 15px 40px;
   font-size: 0.85rem;
   color: #222222;
@@ -88,47 +125,37 @@ body {
   white-space: nowrap;
 }
 
-.tabela tbody tr:hover {
+.tabela-relatorio-planos tbody tr:hover {
   background: none;
   cursor: default;
 }
 
-.filtro-preco {
+.grafico-container-relatorio-planos {
+  width: 100%;
   display: flex;
+  justify-content: center;
   align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-  margin-bottom: 1rem;
 }
-
-.filtro-preco label select {
-  margin-left: 0.5rem;
-  padding: 4px 8px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  font-size: 0.85rem;
-}
-
 
 @media (max-width: 600px) {
-  .tabela thead {
+  .tabela-relatorio-planos thead {
     display: none;
   }
 
-  .tabela,
-  .tabela tbody,
-  .tabela tr,
-  .tabela td {
+  .tabela-relatorio-planos,
+  .tabela-relatorio-planos tbody,
+  .tabela-relatorio-planos tr,
+  .tabela-relatorio-planos td {
     display: block;
     width: 100%;
   }
 
-  .tabela tr {
+  .tabela-relatorio-planos tr {
     margin-bottom: 1rem;
     border-bottom: 1px solid #ccc;
   }
 
-  .tabela td {
+  .tabela-relatorio-planos td {
     position: relative;
     padding: 12px 10px 12px 50%;
     min-height: 48px;
@@ -136,7 +163,7 @@ body {
     overflow-wrap: break-word;
   }
 
-  .tabela td::before {
+  .tabela-relatorio-planos td::before {
     content: attr(data-label);
     position: absolute;
     top: 50%;
