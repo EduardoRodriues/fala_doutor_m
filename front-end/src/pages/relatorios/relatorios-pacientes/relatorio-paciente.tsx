@@ -9,12 +9,14 @@ import {
   LinearScale,
   BarElement,
 } from "chart.js";
-import "./relatorio-paciente.css";
-import type { Paciente } from "../../../types/paciente";
-import { filtroPacientePorPlano } from "../../../services/relatorios/pacientes/filtroPacientesPorPlano";
-import { listarPacientes } from "../../../services/pacientes/listarPacientes";
-import { filtrolPacienteIdade } from "../../../services/relatorios/pacientes/filtroPacienteIdade";
-import type { PacientesPorPlano } from "../../../types/pacientesPorPlano";
+import "../global/css/index-relatorios.css";
+import type { Paciente } from "../../../types/pacientes/paciente";
+import type { PacientesPorPlano } from "../../../types/relatorios/pacientesPorPlano";
+import {
+  filtrolPacienteIdade,
+  filtroPacientePorPlano,
+} from "../../../services/relatorios/pacientes/filtrosPaciente";
+import { listarPacientes } from "../../../services/pacientes/apiPacientes";
 
 ChartJS.register(
   ArcElement,
@@ -86,6 +88,15 @@ function RelatorioPacientes(): JSX.Element {
     setTipoVisualizacao(novoTipoVis);
   };
 
+  function formatarData(data: string): string {
+    const [ano, mes, dia] = data.split("T")[0].split("-");
+    return `${dia}/${mes}/${ano}`;
+  }
+
+  function formatarCpf(cpf: string): string {
+    return cpf.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3-$4");
+  }
+
   const dadosGraficoIdade = (() => {
     if (!todosPacientes || todosPacientes.length === 0) return null;
 
@@ -109,7 +120,7 @@ function RelatorioPacientes(): JSX.Element {
     const planosArray = pacientes as PacientesPorPlano[];
     if (!planosArray || planosArray.length === 0) return null;
 
-    const labels = planosArray.map((plano) => plano.planoId);
+    const labels = planosArray.map((plano) => plano.planoNome);
     const counts = planosArray.map((plano) =>
       plano && plano.pacientes ? plano.pacientes.length : 0
     );
@@ -130,43 +141,43 @@ function RelatorioPacientes(): JSX.Element {
 
   return (
     <>
-      <div className="header-relatorio-pacientes">
+      <div className="header-relatorio">
         <h1>Relatório de Pacientes</h1>
       </div>
 
-      <section className="back-relatorio-pacientes">
+      <section className="back-relatorio">
         <div>
-          <div className="filtro-pacientes-relatorio-pacientes">
+          <div className="filtro-relatorio">
             <p>Pacientes</p>
 
-            <label>
-              Tipo de Relatório:
-              <select
-                value={tipoRelatorio}
-                onChange={(e) => handleTipoRelatorioChange(e.target.value)}
-              >
-                <option value="idade">Pacientes Acima de 50</option>
-                <option value="plano">Pacientes por Plano</option>
-              </select>
-            </label>
-
-            <label style={{ marginLeft: "1rem" }}>
-              Visualização:
-              <select
-                value={tipoVisualizacao}
-                onChange={(e) => handleTipoVisualizacaoChange(e.target.value)}
-              >
-                <option value="lista">Lista</option>
-                <option value="pizza">Gráfico de Pizza</option>
-                <option value="barra">Gráfico de Barra</option>
-              </select>
-            </label>
+            <div>
+              <label style={{ marginLeft: "1rem" }}>
+                Visualização:
+                <select
+                  className="select-lista"
+                  value={tipoVisualizacao}
+                  onChange={(e) => handleTipoVisualizacaoChange(e.target.value)}
+                >
+                  <option value="lista">Lista</option>
+                  <option value="pizza">Gráfico de Pizza</option>
+                  <option value="barra">Gráfico de Barra</option>
+                </select>
+                Tipo de Relatório:
+                <select
+                  value={tipoRelatorio}
+                  onChange={(e) => handleTipoRelatorioChange(e.target.value)}
+                >
+                  <option value="idade">Pacientes Acima de 50</option>
+                  <option value="plano">Pacientes por Plano</option>
+                </select>
+              </label>
+            </div>
           </div>
 
           {tipoVisualizacao !== "lista" && (
             <div
               style={{ maxWidth: 600, margin: "1rem auto" }}
-              className="grafico-relatorio-pacientes"
+              className="grafico-relatorio"
             >
               {tipoRelatorio === "idade" &&
                 dadosGraficoIdade &&
@@ -190,20 +201,24 @@ function RelatorioPacientes(): JSX.Element {
           )}
 
           {tipoVisualizacao === "lista" && (
-            <table className="tabela-relatorio-pacientes">
+            <table className="tabela-relatorio">
               {tipoRelatorio === "idade" ? (
                 <>
                   <thead>
                     <tr>
                       <th>Nome</th>
-                      <th></th>
+                      <th>CPF</th>
+                      <th>Data de Nacsimento</th>
                     </tr>
                   </thead>
                   <tbody>
                     {(pacientes as Paciente[]).map((paciente) => (
                       <tr key={paciente.id}>
                         <td data-label="Nome">{paciente.nome}</td>
-                        <td></td>
+                        <td data-label="Nome">{formatarCpf(paciente.cpf)}</td>
+                        <td data-label="Nome">
+                          {formatarData(paciente.dataNasc)}
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -213,7 +228,7 @@ function RelatorioPacientes(): JSX.Element {
                   <thead>
                     <tr>
                       {(pacientes as PacientesPorPlano[])
-                        .map((plano) => plano.planoId)
+                        .map((plano) => plano.planoNome)
                         .map((planoId) => (
                           <th key={planoId}>{planoId}</th>
                         ))}
@@ -236,8 +251,8 @@ function RelatorioPacientes(): JSX.Element {
                           <tr key={i}>
                             {planosArray.map((plano) => (
                               <td
-                                key={plano.planoId}
-                                data-label={plano.planoId}
+                                key={plano.planoNome}
+                                data-label={plano.planoNome}
                               >
                                 {plano?.pacientes?.[i]?.nome ?? ""}
                               </td>

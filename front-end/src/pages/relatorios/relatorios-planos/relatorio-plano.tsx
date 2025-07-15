@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useState, type JSX } from "react";
-import "./relatorio-plano.css";
-import type { Plano } from "../../../types/plano";
+import "../global/css/index-relatorios.css";
+import type { Plano } from "../../../types/planos/plano";
 import { filtroPrecoPlano } from "../../../services/relatorios/planos/filtroPrecoPlano";
-import { listarPlanos } from "../../../services/planos/listarPlanos";
 import { Pie, Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -13,6 +12,7 @@ import {
   LinearScale,
   BarElement,
 } from "chart.js";
+import { listarPlanos } from "../../../services/planos/apiPlanos";
 
 ChartJS.register(
   ArcElement,
@@ -107,11 +107,12 @@ function RelatorioPlanos(): JSX.Element {
   };
 
   const renderLista = () => (
-    <table className="tabela">
+    <table className="tabela-relatorio">
       <thead>
         <tr>
           <th>Nome</th>
           <th>Preço</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -154,27 +155,32 @@ function RelatorioPlanos(): JSX.Element {
 
   return (
     <>
-      <div className="header-relatorio-planos">
+      <div className="header-relatorio">
         <h1>Relatório de Planos</h1>
       </div>
 
-      <section className="back-relatorio-planos">
+      <section className="back-relatorio">
         <div>
-          <div className="view-selector-relatorio-planos">
+          <div className="filtro-relatorio">
             <p>Planos</p>
-            <select
-              value={viewMode}
-              onChange={(e) =>
-                setViewMode(e.target.value as "lista" | "pizza" | "barra")
-              }
-            >
-              <option value="lista">Lista</option>
-              <option value="pizza">Gráfico de Pizza</option>
-              <option value="barra">Gráfico de Barra</option>
-            </select>
-          </div>
 
-          <div className="filtro-preco-relatorio-planos">
+            <div className="margem-lista">
+              <label style={{ marginLeft: "1rem" }}>
+                Visualização:
+                <select
+                  className="select-lista"
+                  value={viewMode}
+                  onChange={(e) =>
+                    setViewMode(e.target.value as "lista" | "pizza" | "barra")
+                  }
+                >
+                  <option value="lista">Lista</option>
+                  <option value="pizza">Gráfico de Pizza</option>
+                  <option value="barra">Gráfico de Barra</option>
+                </select>
+              </label>
+            </div>
+
             <label>
               Filtrar por preço (mais de):
               <select

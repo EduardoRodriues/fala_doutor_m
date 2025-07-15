@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { PlanosPaginationResponse } from "../../../types/paginacao/planoPaginationResponse";
+import type { PlanosPaginationResponse } from "../../../types/planos/paginacao/planoPaginationResponse";
 
 export async function filtroPrecoPlano(
   page = 1,

@@ -1,15 +1,9 @@
 import { useEffect, useState, type FormEvent } from "react";
-import type { Medico } from "../../types/medico";
-import type { Plano } from "../../types/plano";
-import { criarMedico } from "../../services/medicos/criarMedicos";
-import { editarMedico } from "../../services/medicos/editarMedico";
-import { listarPlanos } from "../../services/planos/listarPlanos";
-import "./formulario-medico.css";
-
-interface FormularioMedicoProps {
-  medico?: Medico;
-  onSuccess: () => void;
-}
+import type { Plano } from "../../types/planos/plano";
+import "../global/css/index-form.css";
+import { criarMedico, editarMedico } from "../../services/medicos/apiMedicos";
+import { listarPlanos } from "../../services/planos/apiPlanos";
+import type { FormularioMedicoProps } from "../../types/medicos/forms/form-prop-medicos";
 
 function FormularioMedico({ medico, onSuccess }: FormularioMedicoProps) {
   const [nome, setNome] = useState(medico?.nome ?? "");
@@ -108,7 +102,7 @@ function FormularioMedico({ medico, onSuccess }: FormularioMedicoProps) {
   }
 
   return (
-    <form className="formulario-medico" onSubmit={handleSubmit}>
+    <form className="formulario" onSubmit={handleSubmit}>
       <h2>{medico ? "Editar Médico" : "Adicionar Novo Médico"}</h2>
       <p className="subtitulo">
         Preencha os dados abaixo para {medico ? "editar" : "adicionar"} um

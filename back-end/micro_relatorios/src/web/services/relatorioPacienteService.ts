@@ -57,7 +57,6 @@ export async function pacientesPorPlano(
 
     if (!acc[key]) {
       acc[key] = {
-        planoId: key,
         planoNome: planoNome,
         pacientes: []
       };

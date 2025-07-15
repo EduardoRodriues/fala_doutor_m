@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { MedicoPaginationResponse } from "../../../types/paginacao/medicoPaginationResponse";
+import type { MedicoPaginationResponse } from "../../../types/medicos/paginacao/medicoPaginationResponse";
 
 export async function filtroMedicosIdade(
   page = 1,

@@ -1,15 +1,10 @@
 import { useState, type FormEvent } from "react";
-import "./formulario-plano.css";
-import type { Plano } from "../../types/plano";
-import { criarPlano } from "../../services/planos/criarPlanos";
-import { editarPlano } from "../../services/planos/editarPlano";
+import "../global/css/index-form.css";
+import type { Plano } from "../../types/planos/plano";
+import { criarPlano, editarPlano } from "../../services/planos/apiPlanos";
+import type { FormularioPlanoProps } from "../../types/planos/forms/form-prop-planos";
 
-interface FormularioPlano {
-  plano?: Plano;
-  onSuccess: () => void;
-}
-
-function FormularioPlano({ plano, onSuccess }: FormularioPlano) {
+function FormularioPlano({ plano, onSuccess }: FormularioPlanoProps) {
   const [nome, setNome] = useState(plano?.nome ?? "");
   const [descricao, setDescricao] = useState(plano?.descricao ?? "");
   const [preco, setPreco] = useState(
@@ -60,7 +55,7 @@ function FormularioPlano({ plano, onSuccess }: FormularioPlano) {
   }
 
   return (
-    <form className="formulario-plano" onSubmit={handleSubmit}>
+    <form className="formulario" onSubmit={handleSubmit}>
       <h2>{plano ? "Editar Plano" : "Adicionar Novo Plano"}</h2>
       <p className="subtitulo">
         Preencha os dados abaixo para {plano ? "editar" : "adicionar"} um plano

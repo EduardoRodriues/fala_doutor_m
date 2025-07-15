@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useState, type JSX } from "react";
-import "./relatorio-medico.css";
-import type { Medico } from "../../../types/medico";
+import "../global/css/index-relatorios.css";
+import type { Medico } from "../../../types/medicos/medico";
 import { filtroMedicosIdade } from "../../../services/relatorios/medicos/filtroMedicoIdade";
-import { listarMedicos } from "../../../services/medicos/listarMedicos";
 import {
   Chart as ChartJS,
   ArcElement,
@@ -13,6 +12,7 @@ import {
   BarElement,
 } from "chart.js";
 import { Pie, Bar } from "react-chartjs-2";
+import { listarMedicos } from "../../../services/medicos/apiMedicos";
 
 ChartJS.register(
   ArcElement,
@@ -80,19 +80,25 @@ function RelatorioMedicos(): JSX.Element {
     ],
   };
 
+  function formatarCPF(cpf: string): string {
+    return cpf.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3-$4");
+  };
+
   const renderLista = () => (
-    <table className="tabela-relatorio-medicos">
+    <table className="tabela-relatorio">
       <thead>
         <tr>
           <th>Nome</th>
-          <th></th>
+          <th>CPF</th>
+          <th>CRM</th>
         </tr>
       </thead>
       <tbody>
         {medicos.map((medico) => (
           <tr key={medico.id}>
             <td data-label="Nome">{medico.nome}</td>
-            <td></td>
+            <td data-label="CPF">{formatarCPF(medico.cpf)}</td>
+            <td data-label="CRM">{medico.crm}</td>
           </tr>
         ))}
       </tbody>
@@ -113,24 +119,27 @@ function RelatorioMedicos(): JSX.Element {
 
   return (
     <>
-      <div className="header-relatorio-medicos">
+      <div className="header-relatorio">
         <h1>Relatório de Médicos</h1>
       </div>
 
-      <section className="back-relatorio-medicos">
+      <section className="back-relatorio">
         <div>
-          <div className="view-selector-relatorio-medicos">
+          <div className="filtro-relatorio">
             <p>Médicos Acima de 50 anos</p>
-            <select
-              value={viewMode}
-              onChange={(e) =>
-                setViewMode(e.target.value as "lista" | "pizza" | "barra")
-              }
-            >
-              <option value="lista">Lista</option>
-              <option value="pizza">Gráfico de Pizza</option>
-              <option value="barra">Gráfico de Barra</option>
-            </select>
+            <label style={{ marginLeft: "1rem" }}>
+              Visualizacão:
+              <select
+                value={viewMode}
+                onChange={(e) =>
+                  setViewMode(e.target.value as "lista" | "pizza" | "barra")
+                }
+              >
+                <option value="lista">Lista</option>
+                <option value="pizza">Gráfico de Pizza</option>
+                <option value="barra">Gráfico de Barra</option>
+              </select>
+            </label>
           </div>
 
           {viewMode === "lista" && renderLista()}

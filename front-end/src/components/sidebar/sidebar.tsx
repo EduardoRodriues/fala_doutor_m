@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { FaUserMd, FaFileMedicalAlt, FaUser, FaChartBar, FaChevronDown, FaChevronUp } from "react-icons/fa";
+import {
+  FaUserMd,
+  FaFileMedicalAlt,
+  FaUser,
+  FaChartBar,
+  FaChevronDown,
+  FaChevronUp,
+  FaFileMedical,
+} from "react-icons/fa";
 import { LuLogOut, LuSettings } from "react-icons/lu";
 import { Link, useLocation } from "react-router-dom";
 import "./Sidebar.css";
@@ -54,6 +62,16 @@ export function Sidebar() {
             </li>
           </Link>
 
+          <Link
+            to="/consultas"
+            className={location.pathname === "/consultas" ? "active" : ""}
+          >
+            <li>
+              <FaFileMedical className="icon" />
+              <span>Consultas</span>
+            </li>
+          </Link>
+
           <li
             className="relatorios-toggle"
             onClick={toggleRelatorios}
@@ -72,21 +90,35 @@ export function Sidebar() {
             <div className="submenu-relatorios">
               <Link
                 to="/relatorio-medicos"
-                className={location.pathname === "/relatorio-medicos" ? "active" : ""}
+                className={
+                  location.pathname === "/relatorio-medicos" ? "active" : ""
+                }
               >
                 <li>Médicos</li>
               </Link>
               <Link
                 to="/relatorio-pacientes"
-                className={location.pathname === "/relatorio-pacientes" ? "active" : ""}
+                className={
+                  location.pathname === "/relatorio-pacientes" ? "active" : ""
+                }
               >
                 <li>Pacientes</li>
               </Link>
               <Link
                 to="/relatorio-planos"
-                className={location.pathname === "/relatorio-planos" ? "active" : ""}
+                className={
+                  location.pathname === "/relatorio-planos" ? "active" : ""
+                }
               >
                 <li>Planos</li>
+              </Link>
+              <Link
+                to="/relatorio-consultas"
+                className={
+                  location.pathname === "/relatorio-consultas" ? "active" : ""
+                }
+              >
+                <li>Consultas</li>
               </Link>
             </div>
           )}

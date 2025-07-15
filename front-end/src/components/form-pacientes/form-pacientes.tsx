@@ -1,15 +1,9 @@
 import { useEffect, useState, type FormEvent } from "react";
-import type { Plano } from "../../types/plano";
-import { listarPlanos } from "../../services/planos/listarPlanos";
-import "./form-pacientes.css";
-import type { Paciente } from "../../types/paciente";
-import { editarPaciente } from "../../services/pacientes/editarPaciente";
-import { criarPaciente } from "../../services/pacientes/criarPaciente";
-
-interface FormularioPacienteProps {
-  paciente?: Paciente;
-  onSuccess: () => void;
-}
+import type { Plano } from "../../types/planos/plano";
+import "../global/css/index-form.css";
+import { criarPaciente, editarPaciente } from "../../services/pacientes/apiPacientes";
+import { listarPlanos } from "../../services/planos/apiPlanos";
+import type { FormularioPacienteProps } from "../../types/pacientes/forms/form-prop-pacientes";
 
 function FormularioPaciente({ paciente, onSuccess }: FormularioPacienteProps) {
   const [nome, setNome] = useState(paciente?.nome ?? "");
@@ -91,7 +85,7 @@ function FormularioPaciente({ paciente, onSuccess }: FormularioPacienteProps) {
   }
 
   return (
-    <form className="formulario-medico" onSubmit={handleSubmit}>
+    <form className="formulario" onSubmit={handleSubmit}>
       <h2>{paciente ? "Editar Paciente" : "Adicionar Novo Paciente"}</h2>
       <p className="subtitulo">
         Preencha os dados abaixo para {paciente ? "editar" : "adicionar"} um

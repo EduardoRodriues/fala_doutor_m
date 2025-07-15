@@ -1,11 +1,13 @@
 import { Route, Routes } from "react-router-dom";
 import { Layout } from "../layout/layout";
-import GestaoMedico from "../pages/gestao-medicos/gestao-medicos";
 import GestaoPlano from "../pages/gestao-planos/gestao-planos";
 import GestaoPacientes from "../pages/gestao-pacientes/gestao-pacientes";
 import RelatorioMedicos from "../pages/relatorios/relatorios-medicos/relatorio-medicos";
 import RelatorioPlanos from "../pages/relatorios/relatorios-planos/relatorio-plano";
 import RelatorioPacientes from "../pages/relatorios/relatorios-pacientes/relatorio-paciente";
+import GestaoConsultas from "../pages/gestao-consultas/gestao-consultas";
+import RelatorioConsultas from "../pages/relatorios/relatorios-consultas/relatorio-consulta";
+import GestaoMedicos from "../pages/gestao-medicos/gestao-medicos";
 
 export function AppRoutes() {
   return (
@@ -14,7 +16,7 @@ export function AppRoutes() {
         path="/"
         element={
           <Layout>
-            <GestaoMedico />
+            <GestaoMedicos />
           </Layout>
         }
       />
@@ -31,6 +33,14 @@ export function AppRoutes() {
         element={
           <Layout>
             <GestaoPlano />
+          </Layout>
+        }
+      />
+      <Route
+        path="/consultas"
+        element={
+          <Layout>
+            <GestaoConsultas />
           </Layout>
         }
       />
@@ -55,6 +65,14 @@ export function AppRoutes() {
         element={
           <Layout>
             <RelatorioPlanos />
+          </Layout>
+        }
+      />
+      <Route
+        path="/relatorio-consultas"
+        element={
+          <Layout>
+            <RelatorioConsultas />
           </Layout>
         }
       />
