@@ -11,6 +11,7 @@ import {
 import { LuLogOut, LuSettings } from "react-icons/lu";
 import { Link, useLocation } from "react-router-dom";
 import "./Sidebar.css";
+import imgChat from "../global/imgs/img-chat.png";
 
 export function Sidebar() {
   const location = useLocation();
@@ -122,6 +123,20 @@ export function Sidebar() {
               </Link>
             </div>
           )}
+        </ul>
+      </nav>
+
+      <nav className="menu menu-chat">
+        <ul>
+          <Link
+            to="/chatbot"
+            className={location.pathname === "/chatbot" ? "active" : ""}
+          >
+            <li>
+              <img src={imgChat} alt="imagem chat" className="img-chat"/>
+              <span className="title-ai">Fala Doutor AI</span>
+            </li>
+          </Link>
         </ul>
       </nav>
 
