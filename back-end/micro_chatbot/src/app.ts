@@ -1,7 +1,7 @@
 import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
-import chatbotRouter from "./routes/chatbot";
+import chatbotRouter from "./routes/chatbotRouter";
 
 dotenv.config();
 
