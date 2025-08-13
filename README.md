@@ -58,5 +58,9 @@ Aplicação web moderna para gestão administrativa de clínicas médicas, desen
    git clone https://github.com/seu-usuario/seu-projeto.git
 
 
-## 📦 Estrutura do Projeto
+## 📦 Imagens do Projeto
+
+![Tela Inicial](./documentos/media/Screenshot 2025-07-17 at 15.31.00)
+
+
 
