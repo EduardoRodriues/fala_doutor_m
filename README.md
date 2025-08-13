@@ -38,7 +38,7 @@ Aplicação web moderna para gestão administrativa de clínicas médicas, desen
 - 📋 **Cadastro, edição, listagem e exclusão** de médicos, pacientes, planos de saúde, etc.
 - 🔗 Integração entre **frontend** e **backend** via **API RESTful**
 - 🤖 **Chatbot com RAG** para suporte contextual sobre os serviços
-- 📱 Interface **responsiva** para desktop e mobile
+- 📱 Interface **responsiva** para desktop
 - 🛠 Arquitetura de **microserviços** para fácil manutenção e expansão
 
 ---
@@ -60,8 +60,7 @@ Aplicação web moderna para gestão administrativa de clínicas médicas, desen
 
 ## 📦 Imagens do Projeto
 
-![Tela Inicial](./documentos/media/Screenshot-2025-07-17-at-15.31.00.png
-)
+![Tela Inicial](./documentos/media/Screenshot-2025-07-17-at-15.31.00.png)
 
 
 
