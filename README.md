@@ -60,7 +60,7 @@ Aplicação web moderna para gestão administrativa de clínicas médicas, desen
 
 ## 📦 Imagens do Projeto
 
-![Tela Inicial](./documentos/media/Screenshot 2025-07-17 at 15.31.00)
+![Tela Inicial](./documentos/media/Screenshot 2025-07-17 at 15.31.00.png)
 
 
 
