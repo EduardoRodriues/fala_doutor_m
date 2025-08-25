@@ -1,17 +1,21 @@
 import { useCallback, useEffect, useState, type JSX } from "react";
 import type { Medico } from "../../types/medicos/medico";
 import Confirmacao from "../../components/confirmacao/confirmacao";
-import "../global/css/index-gestao.css";
 import FormularioMedico from "../../components/form-medicos/formulario-medico";
 import {
   deletarMedico,
   listarMedicos,
 } from "../../services/medicos/apiMedicos";
 import { FaRegEdit, FaRegTrashAlt, FaUserPlus } from "react-icons/fa";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import Notificacoes from "../notifications/notifications";
+import { useTemNotificacoes } from "../notifications/temNotificacao";
+import "../global/css/index-gestao.css";
 
 function GestaoMedicos(): JSX.Element {
   const [medicos, setMedicos] = useState<Medico[]>([]);
   const [modalAberto, setModalAberto] = useState(false);
+  const [modalNotificacoesAberto, setModalNotificacoesAberto] = useState(false);
   const [confirmacaoAberta, setConfirmacaoAberta] = useState(false);
   const [medicoParaDeletar, setMedicoParaDeletar] = useState<Medico | null>(
     null
@@ -22,6 +26,7 @@ function GestaoMedicos(): JSX.Element {
   const [paginaAtual, setPaginaAtual] = useState(1);
   const [totalPaginas, setTotalPaginas] = useState(1);
   const [limit, setLimit] = useState(10);
+  const [notificacoes, setNotificacoes] = useTemNotificacoes();
 
   const fetchMedicos = useCallback(
     async (paginaAtual = 1, limitAtual = limit) => {
@@ -29,8 +34,9 @@ function GestaoMedicos(): JSX.Element {
       setMedicos(resposta.data);
       setPaginaAtual(resposta.paginaAtual);
       setTotalPaginas(resposta.totalPaginas);
+      setNotificacoes(true);
     },
-    [limit]
+    [limit, setNotificacoes]
   );
 
   useEffect(() => {
@@ -69,6 +75,15 @@ function GestaoMedicos(): JSX.Element {
     }
   }
 
+  function abrirNotificacoes() {
+    setModalNotificacoesAberto(true);
+    setNotificacoes(false);
+  }
+
+  function fecharNotificacoes() {
+    setModalNotificacoesAberto(false);
+  }
+
   function formatarData(data: string): string {
     const [ano, mes, dia] = data.split("T")[0].split("-");
     return `${dia}/${mes}/${ano}`;
@@ -80,10 +95,38 @@ function GestaoMedicos(): JSX.Element {
 
   return (
     <>
+      <NotificationsIcon
+        style={{
+          fontSize: 35,
+          color: "#5b5757",
+          cursor: "pointer",
+          transition: "0.2s",
+        }}
+        onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.2)")}
+        onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+        onClick={abrirNotificacoes}
+        className="notiIcon"
+      />
+      {notificacoes && (
+        <span
+          style={{
+            position: "fixed",
+            top: "1.6rem",
+            right: "1.3rem",
+            width: "12px",
+            height: "12px",
+            backgroundColor: "red",
+            borderRadius: "50%",
+            border: "2px solid white",
+            zIndex: 1001,
+          }}
+        />
+      )}
+
       <div className="header">
         <h1>Gerenciamento de Médicos</h1>
         <button className="btn-novo" onClick={abrirModalNovo}>
-          <FaUserPlus></FaUserPlus>
+          <FaUserPlus />
           Novo Médico
         </button>
       </div>
@@ -123,14 +166,14 @@ function GestaoMedicos(): JSX.Element {
                         aria-label="Editar"
                         onClick={() => abrirModalEditar(medico)}
                       >
-                        <FaRegEdit></FaRegEdit>
+                        <FaRegEdit />
                       </button>
                       <button
                         className="btn-icon btn-icon-2"
                         aria-label="Deletar"
                         onClick={() => abrirConfirmacao(medico)}
                       >
-                        <FaRegTrashAlt></FaRegTrashAlt>
+                        <FaRegTrashAlt />
                       </button>
                     </div>
                   </td>
@@ -189,6 +232,19 @@ function GestaoMedicos(): JSX.Element {
                 fetchMedicos(paginaAtual, limit);
               }}
             />
+          </div>
+        </div>
+      )}
+
+      {modalNotificacoesAberto && (
+        <div
+          className="modal-fundo-noti"
+          onClick={fecharNotificacoes}
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="modal-conteudo" onClick={(e) => e.stopPropagation()}>
+            <Notificacoes />
           </div>
         </div>
       )}

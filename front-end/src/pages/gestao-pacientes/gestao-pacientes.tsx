@@ -10,6 +10,8 @@ import {
 } from "../../services/pacientes/apiPacientes";
 import { listarPlanos } from "../../services/planos/apiPlanos";
 import { FaRegEdit, FaRegTrashAlt, FaUserPlus } from "react-icons/fa";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import Notificacoes from "../notifications/notifications";
 
 function GestaoPacientes(): JSX.Element {
   const [pacientes, setPacientes] = useState<Paciente[]>([]);
@@ -24,6 +26,8 @@ function GestaoPacientes(): JSX.Element {
   const [paginaAtual, setPaginaAtual] = useState(1);
   const [totalPaginas, setTotalPaginas] = useState(1);
   const [limit, setLimit] = useState(10);
+  const [modalNotificacoesAberto, setModalNotificacoesAberto] = useState(false);
+  const [notificacoes, setNotificacoes] = useState(true);
 
   async function fetchPlanos() {
     const resposta = await listarPlanos(1, 1000);
@@ -45,10 +49,10 @@ function GestaoPacientes(): JSX.Element {
           },
         };
       });
-
       setPacientes(pacientesComPlanoNome);
       setPaginaAtual(resposta.paginaAtual);
       setTotalPaginas(resposta.totalPaginas);
+      setNotificacoes(true);
     },
     [limit, planos]
   );
@@ -87,6 +91,15 @@ function GestaoPacientes(): JSX.Element {
     setConfirmacaoAberta(false);
   }
 
+  function abrirNotificacoes() {
+    setModalNotificacoesAberto(true);
+    setNotificacoes(false);
+  }
+
+  function fecharNotificacoes() {
+    setModalNotificacoesAberto(false);
+  }
+
   async function confirmarDelecao() {
     if (pacientParaDeletar) {
       await deletarPaciente(pacientParaDeletar.id);
@@ -106,14 +119,40 @@ function GestaoPacientes(): JSX.Element {
 
   return (
     <>
+      <NotificationsIcon
+        style={{
+          fontSize: 35,
+          color: "#5b5757",
+          cursor: "pointer",
+          transition: "0.2s",
+        }}
+        onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.2)")}
+        onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+        onClick={abrirNotificacoes}
+        className="notiIcon"
+      />
+      {notificacoes && (
+        <span
+          style={{
+            position: "fixed",
+            top: "1.6rem",
+            right: "1.3rem",
+            width: "12px",
+            height: "12px",
+            backgroundColor: "red",
+            borderRadius: "50%",
+            border: "2px solid white",
+            zIndex: 1001,
+          }}
+        />
+      )}
       <div className="header">
         <h1>Gerenciamento de Pacientes</h1>
         <button className="btn-novo" onClick={abrirModalNovo}>
-          <FaUserPlus></FaUserPlus>
+          <FaUserPlus />
           Novo Paciente
         </button>
       </div>
-
       <section className="back">
         <div>
           <div>
@@ -145,14 +184,14 @@ function GestaoPacientes(): JSX.Element {
                         aria-label="Editar"
                         onClick={() => abrirModalEditar(paciente)}
                       >
-                        <FaRegEdit></FaRegEdit>
+                        <FaRegEdit />
                       </button>
                       <button
                         className="btn-icon btn-icon-2"
                         aria-label="Deletar"
                         onClick={() => abrirConfirmacao(paciente)}
                       >
-                        <FaRegTrashAlt></FaRegTrashAlt>
+                        <FaRegTrashAlt />
                       </button>
                     </div>
                   </td>
@@ -160,7 +199,6 @@ function GestaoPacientes(): JSX.Element {
               ))}
             </tbody>
           </table>
-
           <div className="paginacao">
             <button
               disabled={paginaAtual === 1}
@@ -195,7 +233,6 @@ function GestaoPacientes(): JSX.Element {
           </div>
         </div>
       </section>
-
       {modalAberto && (
         <div
           className="modal-fundo"
@@ -214,13 +251,24 @@ function GestaoPacientes(): JSX.Element {
           </div>
         </div>
       )}
-
       {confirmacaoAberta && pacientParaDeletar && (
         <Confirmacao
           mensagem={`Tem certeza que deseja remover este paciente: ${pacientParaDeletar.nome}?`}
           onConfirmar={confirmarDelecao}
           onCancelar={fecharConfirmacao}
         />
+      )}
+      {modalNotificacoesAberto && (
+        <div
+          className="modal-fundo-noti"
+          onClick={fecharNotificacoes}
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="modal-conteudo" onClick={(e) => e.stopPropagation()}>
+            <Notificacoes />
+          </div>
+        </div>
       )}
     </>
   );

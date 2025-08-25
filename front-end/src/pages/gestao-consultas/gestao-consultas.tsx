@@ -8,10 +8,13 @@ import {
   listarConsultas,
 } from "../../services/consultas/apiConsultas";
 import { FaBookMedical, FaRegEdit, FaRegTrashAlt } from "react-icons/fa";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import Notificacoes from "../notifications/notifications";
 
 function GestaoConsultas(): JSX.Element {
   const [consultas, setConsultas] = useState<Consulta[]>([]);
   const [modalAberto, setModalAberto] = useState(false);
+  const [modalNotificacoesAberto, setModalNotificacoesAberto] = useState(false);
   const [confirmacaoAberta, setConfirmacaoAberta] = useState(false);
   const [consultaParaDeletar, setConsultaParaDeletar] =
     useState<Consulta | null>(null);
@@ -20,6 +23,7 @@ function GestaoConsultas(): JSX.Element {
   const [paginaAtual, setPaginaAtual] = useState(1);
   const [totalPaginas, setTotalPaginas] = useState(1);
   const [limit, setLimit] = useState(10);
+  const [notificacoes, setNotificacoes] = useState(true);
 
   const fetchConsultas = useCallback(
     async (paginaAtual = 1, limitAtual = limit) => {
@@ -27,6 +31,7 @@ function GestaoConsultas(): JSX.Element {
       setConsultas(resposta.data);
       setPaginaAtual(resposta.paginaAtual);
       setTotalPaginas(resposta.totalPaginas);
+      setNotificacoes(true);
     },
     [limit]
   );
@@ -72,12 +77,54 @@ function GestaoConsultas(): JSX.Element {
     return `${dia}/${mes}/${ano}`;
   }
 
+  function handleLimiteChange(event: React.ChangeEvent<HTMLSelectElement>) {
+    setLimit(Number(event.target.value));
+    setPaginaAtual(1);
+  }
+
+  function abrirNotificacoes() {
+    setModalNotificacoesAberto(true);
+    setNotificacoes(false);
+  }
+
+  function fecharNotificacoes() {
+    setModalNotificacoesAberto(false);
+  }
+
   return (
     <>
+      <NotificationsIcon
+        style={{
+          fontSize: 35,
+          color: "#5b5757",
+          cursor: "pointer",
+          transition: "0.2s",
+        }}
+        onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.2)")}
+        onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+        onClick={abrirNotificacoes}
+        className="notiIcon"
+      />
+      {notificacoes && (
+        <span
+          style={{
+            position: "fixed",
+            top: "1.6rem",
+            right: "1.3rem",
+            width: "12px",
+            height: "12px",
+            backgroundColor: "red",
+            borderRadius: "50%",
+            border: "2px solid white",
+            zIndex: 1001,
+          }}
+        />
+      )}
+
       <div className="header">
         <h1>Gerenciamento de Consultas</h1>
         <button className="btn-novo" onClick={abrirModalNovo}>
-          <FaBookMedical></FaBookMedical>
+          <FaBookMedical />
           Nova Consulta
         </button>
       </div>
@@ -109,14 +156,14 @@ function GestaoConsultas(): JSX.Element {
                         aria-label="Editar"
                         onClick={() => abrirModalEditar(consulta)}
                       >
-                        <FaRegEdit></FaRegEdit>
+                        <FaRegEdit />
                       </button>
                       <button
                         className="btn-icon btn-icon-2"
                         aria-label="Deletar"
                         onClick={() => abrirConfirmacao(consulta)}
                       >
-                        <FaRegTrashAlt></FaRegTrashAlt>
+                        <FaRegTrashAlt />
                       </button>
                     </div>
                   </td>
@@ -143,13 +190,7 @@ function GestaoConsultas(): JSX.Element {
             </button>
             <label style={{ marginLeft: "1rem" }}>
               Itens por página:{" "}
-              <select
-                value={limit}
-                onChange={(e) => {
-                  setLimit(Number(e.target.value));
-                  setPaginaAtual(1);
-                }}
-              >
+              <select value={limit} onChange={handleLimiteChange}>
                 <option value={5}>5</option>
                 <option value={10}>10</option>
                 <option value={15}>15</option>
@@ -175,6 +216,19 @@ function GestaoConsultas(): JSX.Element {
                 fetchConsultas(paginaAtual, limit);
               }}
             />
+          </div>
+        </div>
+      )}
+
+      {modalNotificacoesAberto && (
+        <div
+          className="modal-fundo-noti"
+          onClick={fecharNotificacoes}
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="modal-conteudo" onClick={(e) => e.stopPropagation()}>
+            <Notificacoes />
           </div>
         </div>
       )}

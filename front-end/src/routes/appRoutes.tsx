@@ -9,6 +9,7 @@ import GestaoConsultas from "../pages/gestao-consultas/gestao-consultas";
 import RelatorioConsultas from "../pages/relatorios/relatorios-consultas/relatorio-consulta";
 import GestaoMedicos from "../pages/gestao-medicos/gestao-medicos";
 import Chatbot from "../pages/chatbot/chatbot";
+import Notificacoes from "../pages/notifications/notifications";
 
 export function AppRoutes() {
   return (
@@ -82,6 +83,14 @@ export function AppRoutes() {
         element={
           <Layout>
             <Chatbot />
+          </Layout>
+        }
+      />
+      <Route
+        path="/notificacoes"
+        element={
+          <Layout>
+            <Notificacoes />
           </Layout>
         }
       />

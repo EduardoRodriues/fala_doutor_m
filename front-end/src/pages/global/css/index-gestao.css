@@ -289,3 +289,21 @@ body {
   border-color: #007bff;
   outline: none;
 }
+
+.notiIcon {
+  float: right;
+  margin-bottom: 30px;
+}
+
+.modal-fundo-noti {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  z-index: 1000;
+}
+
+

@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useState, type JSX } from "react";
-import type { Plano } from "../../types/planos/plano";
 import FormularioPlano from "../../components/form-planos/formulario-plano";
 import ConfirmacaoDialog from "../../components/confirmacao/confirmacao";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import Notificacoes from "../notifications/notifications";
 import "../global/css/index-gestao.css";
 import { deletarPlanos, listarPlanos } from "../../services/planos/apiPlanos";
 import { FaFileMedical, FaRegEdit, FaRegTrashAlt } from "react-icons/fa";
+import type { Plano } from "../../types/planos/plano";
 
 function GestaoPlanos(): JSX.Element {
   const [planos, setPlanos] = useState<Plano[]>([]);
@@ -17,6 +19,8 @@ function GestaoPlanos(): JSX.Element {
   const [paginaAtual, setPaginaAtual] = useState(1);
   const [totalPaginas, setTotalPaginas] = useState(1);
   const [limite, setLimite] = useState(10);
+  const [modalNotificacoesAberto, setModalNotificacoesAberto] = useState(false);
+  const [notificacoes, setNotificacoes] = useState(true);
 
   const fetchPlanos = useCallback(
     async (page = 1, limiteAtual = limite) => {
@@ -24,6 +28,7 @@ function GestaoPlanos(): JSX.Element {
       setPlanos(resposta.data);
       setPaginaAtual(resposta.paginaAtual);
       setTotalPaginas(resposta.totalPaginas);
+      setNotificacoes(true);
     },
     [limite]
   );
@@ -78,21 +83,54 @@ function GestaoPlanos(): JSX.Element {
     setPaginaAtual(1);
   }
 
+  function abrirNotificacoes() {
+    setModalNotificacoesAberto(true);
+    setNotificacoes(false);
+  }
+
+  function fecharNotificacoes() {
+    setModalNotificacoesAberto(false);
+  }
+
   return (
     <>
+      <NotificationsIcon
+        style={{
+          fontSize: 35,
+          color: "#5b5757",
+          cursor: "pointer",
+          transition: "0.2s",
+        }}
+        onMouseEnter={(e) => (e.currentTarget.style.transform = "scale(1.2)")}
+        onMouseLeave={(e) => (e.currentTarget.style.transform = "scale(1)")}
+        onClick={abrirNotificacoes}
+        className="notiIcon"
+      />
+      {notificacoes && (
+        <span
+          style={{
+            position: "fixed",
+            top: "1.6rem",
+            right: "1.3rem",
+            width: "12px",
+            height: "12px",
+            backgroundColor: "red",
+            borderRadius: "50%",
+            border: "2px solid white",
+            zIndex: 1001,
+          }}
+        />
+      )}
       <div className="header">
         <h1>Gerenciamento de Planos</h1>
         <button className="btn-novo" onClick={abrirModalNovo}>
-          <FaFileMedical></FaFileMedical>
+          <FaFileMedical />
           Novo Plano
         </button>
       </div>
-
       <section className="back">
         <div>
-          <div>
-            <p>Lista de Planos</p>
-          </div>
+          <p>Lista de Planos</p>
           <table className="tabela">
             <thead>
               <tr>
@@ -114,21 +152,20 @@ function GestaoPlanos(): JSX.Element {
                       aria-label="Editar"
                       onClick={() => abrirModalEditar(plano)}
                     >
-                      <FaRegEdit></FaRegEdit>
+                      <FaRegEdit />
                     </button>
                     <button
                       className="btn-icon btn-icon-2"
                       aria-label="Deletar"
                       onClick={() => abrirConfirmacao(plano)}
                     >
-                      <FaRegTrashAlt></FaRegTrashAlt>
+                      <FaRegTrashAlt />
                     </button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-
           <div className="paginacao-container">
             <div className="botoes-paginacao">
               <button
@@ -147,7 +184,6 @@ function GestaoPlanos(): JSX.Element {
                 Próxima
               </button>
             </div>
-
             <div className="controle-limite">
               <label htmlFor="limite">Itens por página:</label>
               <select id="limite" value={limite} onChange={handleLimiteChange}>
@@ -160,7 +196,6 @@ function GestaoPlanos(): JSX.Element {
           </div>
         </div>
       </section>
-
       {modalAberto && (
         <div
           className="modal-fundo"
@@ -179,13 +214,24 @@ function GestaoPlanos(): JSX.Element {
           </div>
         </div>
       )}
-
       {confirmacaoAberta && planoParaDeletar && (
         <ConfirmacaoDialog
           mensagem={`Tem certeza que deseja remover este plano: ${planoParaDeletar.nome}?`}
           onConfirmar={confirmarDelecao}
           onCancelar={fecharConfirmacao}
         />
+      )}
+      {modalNotificacoesAberto && (
+        <div
+          className="modal-fundo-noti"
+          onClick={fecharNotificacoes}
+          role="dialog"
+          aria-modal="true"
+        >
+          <div className="modal-conteudo" onClick={(e) => e.stopPropagation()}>
+            <Notificacoes />
+          </div>
+        </div>
       )}
     </>
   );
