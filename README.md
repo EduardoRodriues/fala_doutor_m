@@ -61,6 +61,12 @@ Aplicação web moderna para gestão administrativa de clínicas médicas, desen
 ## 📦 Imagens do Projeto
 
 ![Tela Inicial](./media/gerenciamentos-medicos.png)
+![Formulário Pacientes](./media/form-pacientes.png)
+![Relátorio](./media/relatorio.png)
+![Relátorio 2](./media/relatorio-2.png)
+![AI](./media/fala-doutor-ai.png)
+![AI](./media/ai-1.png)
+![Ai](./media/ai-2.png)
 
 
 
