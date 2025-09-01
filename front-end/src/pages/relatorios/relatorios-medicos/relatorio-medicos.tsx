@@ -13,6 +13,7 @@ import {
 } from "chart.js";
 import { Pie, Bar } from "react-chartjs-2";
 import { listarMedicos } from "../../../services/medicos/apiMedicos";
+import { BotaoExportarMedicos } from "../../../components/export/export-medicos";
 
 ChartJS.register(
   ArcElement,
@@ -82,7 +83,7 @@ function RelatorioMedicos(): JSX.Element {
 
   function formatarCPF(cpf: string): string {
     return cpf.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, "$1.$2.$3-$4");
-  };
+  }
 
   const renderLista = () => (
     <table className="tabela-relatorio">
@@ -119,6 +120,10 @@ function RelatorioMedicos(): JSX.Element {
 
   return (
     <>
+      <div className="header-relatorio-export">
+        <BotaoExportarMedicos />
+      </div>
+
       <div className="header-relatorio">
         <h1>Relatório de Médicos</h1>
       </div>

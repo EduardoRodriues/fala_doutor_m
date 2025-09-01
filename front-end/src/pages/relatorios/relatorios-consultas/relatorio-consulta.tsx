@@ -12,6 +12,7 @@ import {
 import "../global/css/index-relatorios.css";
 import { gerarRelatorioConsulta } from "../../../services/relatorios/consultas/relatorioConsulta";
 import type { ConsultaPorMedico } from "../../../types/relatorios/consultaPorMedico";
+import { BotaoExportarConsultas } from "../../../components/export/export-consulta";
 
 ChartJS.register(
   ArcElement,
@@ -78,6 +79,10 @@ function RelatorioConsultas(): JSX.Element {
 
   return (
     <>
+      <div className="header-relatorio-export">
+        <BotaoExportarConsultas />
+      </div>
+
       <div className="header-relatorio">
         <h1>Relatório de Consultas</h1>
       </div>

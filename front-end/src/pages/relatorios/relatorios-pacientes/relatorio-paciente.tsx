@@ -17,6 +17,7 @@ import {
   filtroPacientePorPlano,
 } from "../../../services/relatorios/pacientes/filtrosPaciente";
 import { listarPacientes } from "../../../services/pacientes/apiPacientes";
+import { BotaoExportarPacientes } from "../../../components/export/export-pacientes";
 
 ChartJS.register(
   ArcElement,
@@ -141,6 +142,9 @@ function RelatorioPacientes(): JSX.Element {
 
   return (
     <>
+      <div className="header-relatorio-export">
+        <BotaoExportarPacientes />
+      </div>
       <div className="header-relatorio">
         <h1>Relatório de Pacientes</h1>
       </div>

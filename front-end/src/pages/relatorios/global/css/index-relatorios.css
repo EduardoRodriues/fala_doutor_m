@@ -214,3 +214,10 @@ body {
   border-color: #007bff;
   outline: none;
 }
+
+.header-relatorio-export {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  gap: 1rem;
+}

@@ -13,6 +13,7 @@ import {
   BarElement,
 } from "chart.js";
 import { listarPlanos } from "../../../services/planos/apiPlanos";
+import { BotaoExportarPlanos } from "../../../components/export/export-planos";
 
 ChartJS.register(
   ArcElement,
@@ -155,6 +156,10 @@ function RelatorioPlanos(): JSX.Element {
 
   return (
     <>
+      <div className="header-relatorio-export">
+        <BotaoExportarPlanos />
+      </div>
+
       <div className="header-relatorio">
         <h1>Relatório de Planos</h1>
       </div>

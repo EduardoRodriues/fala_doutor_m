@@ -38,6 +38,7 @@ export async function perguntasChat(body: { pergunta: string }) {
 
 async function fetchesMicros(micro: object, pergunta: string) {
   var fetches: any = [];
+  const hoje = new Date().toISOString().split("T")[0];
 
   fetches = Object.entries(micro).map(async ([key, url]) => {
     const resp = await axios.get(url, { params: { page: 1, limit: 1000 } });
@@ -59,7 +60,7 @@ Pergunta: ${pergunta}
 
   const completion = await openai.chat.completions.create({
     model: "gpt-3.5-turbo",
-    messages: [{ role: "system", content: prompt }],
+    messages: [{ role: "system", content: `${prompt} ...a data de hoje é: ${hoje}` }],
   });
 
   return completion.choices[0].message?.content || "";
